@@ -19,21 +19,18 @@ phonecatApp.controller('PhoneListController', function PhoneListController($scop
         // your calls to AP herevar resize = function() {
         AP.resize();
 
-        AP.getLocation(function(location) {
-            var broken = location.split("/")
-            $scope.issueKey = broken[broken.length - 1]
-            $scope.projectKey = $scope.issueKey.replace(/[^A-Z]/g, '');
-            console.log($scope.projectKey)
-            $scope.$apply();
+        
 
             AP.require("_util", function(util) {
                var hostString = util.decodeQueryComponent(window.location.href);
-               alert(hostString);
                var qs = URI(hostString).query(true);
-               var issueKey = qs['issueKey'];
-               console.log(issueKey);
-               alert(issueKey);
-            });
+               $scope.issueKey = qs['issueKey'];
+               $scope.projectKey = qs['projectKey'];
+               $scope.$apply();
+               
+               alert($scope.issueKey);
+               alert($scope.projectKey);
+           
 
             AP.require(['request'], function(request) {
                 request({
@@ -83,7 +80,7 @@ phonecatApp.controller('PhoneListController', function PhoneListController($scop
 
             });
 
-        });
+            });
 
     });
 
