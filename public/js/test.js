@@ -5,17 +5,11 @@ var phonecatApp = angular.module('phonecatApp', ['ngRoute']);
 
 // Define the `PhoneListController` controller on the `phonecatApp` module
 phonecatApp.controller('ConfigController', function ConfigController($scope, $window, $http, $route, $location) {
-     //get base URL: https://femidev.atlassian.net
-    var baseUrl = $window.base;
-    console.log(baseUrl)
+    
+    var baseUrl = $window.base; //get base URL: https://femidev.atlassian.net
+    $scope.projectKey; //get current project - FEM
 
 
-    //get current project - FEM
-    $scope.projectKey;
-
-AP.require("_util", function(util){
-  alert(util.decodeQueryComponent(window.location.href));
-});
 
     $scope.submit = function() {
         var submission = {
@@ -27,7 +21,7 @@ AP.require("_util", function(util){
         }
         
         submission = angular.toJson(submission, true );
-        console.log(submission)
+      
 
         AP.require('request', function(request) {
             request({
@@ -47,7 +41,7 @@ AP.require("_util", function(util){
 
     }
 
-    $.getScript($window.base + '/atlassian-connect/all-debug.js', function() {
+    
         AP.resize();
         AP.getLocation(function(location) {
            
@@ -75,12 +69,11 @@ AP.require("_util", function(util){
                     },
                     contentType: "application/json"
                 });
+                
             });
-
-
 
         });
 
-    });
+    
 
 });
