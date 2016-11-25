@@ -1,0 +1,79 @@
+{
+    "key": "my-add-on",
+    "name": "Ping Pong",
+    "description": "My very first add-on",
+    "vendor": {
+        "name": "Angry Nerds",
+        "url": "https://www.atlassian.com/angrynerds"
+    },
+    "baseUrl": "{{localBaseUrl}}",
+    "links": {
+        "self": "{{localBaseUrl}}/atlassian-connect.json",
+        "homepage": "{{localBaseUrl}}/atlassian-connect.json"
+    },
+    "authentication": {
+        "type": "jwt"
+    },
+    "lifecycle": {
+        "installed": "/installed"
+    },
+    "scopes": [
+        "read", "write","delete"
+    ],
+    "modules": {
+        "generalPages": [
+            {
+                "key": "hello-world-page-jira",
+                "location": "system.top.navigation.bar",
+                "name": {
+                    "value": "Hello World"
+                },
+                "url": "/hello-world",
+                "conditions": [{
+                    "condition": "user_is_logged_in"
+                }]
+            },
+            {
+                "key": "hello-world-page-confluence",
+                "location": "system.header/left",
+                "name": {
+                    "value": "Hello World"
+                },
+                "url": "/hello-world?issueKey={issue.key}",
+                "conditions": [{
+                    "condition": "user_is_logged_in"
+            }]
+        }],
+        "webPanels": [
+      {
+        "url": "/hello-world?issueKey={issue.key}&projectKey={project.key}",
+        "location": "atl.jira.view.issue.right.context",
+        "layout": {
+          "width": "10px",
+          "height": "100%"
+        },
+        "weight": 50,
+        "name": {
+          "value": "SpiraTeam Test Coverage"
+        },
+        "key": "my-web-panel"
+      }
+    ],
+    "jiraProjectAdminTabPanels": [
+            {
+                "location": "projectgroup2",
+                "url": "/test?projectKey={project.key}",
+                "weight": 100,
+                "name": {
+                    "value": "SpiraTeam API Access"
+                },
+                "key": "spira-team-project-settings",
+                "params":{
+                    "baseURL": "1",
+                    "username": "2",
+                    "apiKey":"3"
+                }
+            }
+        ]
+    }
+}

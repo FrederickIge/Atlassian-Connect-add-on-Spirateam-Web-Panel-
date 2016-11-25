@@ -1,0 +1,42 @@
+{{!< layout}}
+<div ng-controller="ConfigController">
+<section id="content" class="ac-content">
+  <div class="aui-page-header">
+   <div class="aui-page-header-main">
+    <h2>SpiraTeam API Access</h2>
+   </div>
+  </div>
+  <form class="aui">
+    <div class="field-group">
+    <label for="text-input">SpiraTeam URL<span class="aui-icon icon-required">required</span></label>
+    <input ng-model="spiraURL" class="text" type="text" id="text-input" name="text-input" title="Text input">
+    <div class="description">example:https://spira.inflectra.com</div>
+   </div>
+   <div class="field-group">
+    <label for="text-input">Username<span class="aui-icon icon-required">required</span></label>
+    <input ng-model="username" class="text" type="text" id="text-input" name="text-input" title="Text input">
+    <div class="description">example: administrator</div>
+   </div>
+   <div class="field-group">
+    <label for="text-input">API key / RSS Token<span class="aui-icon icon-required">required</span></label>
+    <input ng-model="apiKey" class="text" type="text" id="text-input" name="text-input" title="Text input">
+    <div class="description">format: {XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX}</div>
+   </div>
+    <div class="field-group">
+    <label for="text-input">Project ID<span class="aui-icon icon-required">required</span></label>
+    <input ng-model="projectID" class="text" type="text" id="text-input" name="text-input" title="Text input">
+    <div class="description"></div>
+   </div>
+    <div class="buttons-container">
+        <div class="buttons">
+            <input ng-click='submit()' class="button submit" type="submit" value="Save" id="comment-save-button">
+            <a class="cancel" href="#">Cancel</a>
+            
+        </div>
+    </div>
+  </form>
+ </section>
+</div>
+<script src="./js/test.js"></script>
+<script src="./css/addon.css"></script>
+<script src="./js/URI.min.js"></script>
