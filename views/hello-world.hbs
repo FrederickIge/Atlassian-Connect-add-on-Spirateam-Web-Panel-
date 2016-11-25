@@ -1,13 +1,7 @@
 {{!< layout}}
 <div ng-controller="PhoneListController">
 <header class="aui-page-header">
-  <div class="aui-page-header-inner">
-    <div class="aui-page-header-main intro-header">
-      <h1>Hello World!</h1>
-
-      <p class="subtitle">Welcome to {{title}}</p>
-    </div>
-  </div>
+  
 </header>
 
 <div class="aui-page-panel main-panel">
@@ -15,8 +9,11 @@
     <section class="aui-page-panel-item">
       <div class="aui-group">
         <div class="aui-item">
-          <p>
-            Congratulations. You've successfully created an Atlassian Connect add-on using the
+           CoverageCountTotal : {[{ CoverageCountTotal }]}
+           CoverageCountPassed : {[{ CoverageCountPassed }]}
+           CoverageCountFailed : {[{ CoverageCountFailed }]}
+           CoverageCountCaution : {[{ CoverageCountCaution }]}
+           CoverageCountBlocked : {[{ CoverageCountBlocked }]}
             <a href="https://bitbucket.org/atlassian/atlassian-connect-express/src/master/README.md#markdown-header-atlassian-connect-express-nodejs-package-for-express-based-atlassian-add-ons" target="_parent">atlassian-connect-express</a>
             client library.
           </p>

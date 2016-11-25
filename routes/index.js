@@ -21,65 +21,71 @@ module.exports = function(app, addon) {
     app.get('/hello-world', addon.authenticate(), function(req, res) {
 
 
-/*
-        var options = {
-            method: 'GET',
-            url: 'https://demo.spiraservice.net/bakaproof/Services/v5_0/RestService.svc/data-syncs',
-            headers: {
-                'postman-token': 'faa6d6ea-d579-cbe9-e7a7-58c464c2fc06',
-                'cache-control': 'no-cache',
-                'content-type': 'application/json',
-                authorization: 'Basic YWRtaW5pc3RyYXRvcjp7RkFDMDM5MzQtQTQ0Qy00RkVDLTg1REYtRTc5RUMwODgwODA5fQ=='
-            }
-        };
 
-        request(options, function(error, response, body) {
-            if (error) throw new Error(error);
-
-            console.log(body);
-        });
-*/
         res.render('hello-world', {
             title: 'Atlassian Connect'
-                //issueId: req.query['issueId']
+
         });
     });
 
-app.post('/spirateam', function(req, res) {
+    app.post('/spirateam', function(req, res) {
 
-    console.log(req.body.url)
 
-    var options = {
-        method: 'POST',
-        url: req.body.url,
-        headers: {
-            'content-type': 'application/json',
-            authorization: 'Basic ' + req.body.encoded
-        },
-        body: req.body.data,
-       json: true 
-    };
-    
-    console.log(options)
 
-    request(options, function(error, response, body) {
-        if (error) throw new Error(error);
+        var options1 = {
+            method: 'POST',
+            url: req.body.url,
+            headers: {
+                'content-type': 'application/json',
+                authorization: 'Basic ' + req.body.encoded
+            },
+            body: req.body.data,
+            json: true
+        };
 
-       
-        console.log(response.body);
+
+
+
+        request(options1, function(error, response, body) {
+            if (error) throw new Error(error);
+
+            console.log(typeof response.body)
+
+            if (response.body == '[]' || JSON.stringify(response.body) == '[]') {
+                console.log('inside')
+               res.end()
+            }
+
+            else {
+                var requirement = response.body[0].ArtifactIds[0];
+
+                var options2 = {
+                    method: 'GET',
+                    url: req.body.reqUrl + requirement,
+                    headers: {
+                        'content-type': 'application/json',
+                        authorization: 'Basic ' + req.body.encoded
+                    },
+                    json: true
+                };
+                console.log(req.body.reqUrl + requirement)
+                request(options2, function(error, response, body) {
+                    if (error) throw new Error(error);
+
+                    
+                    res.json(response.body);
+                });
+            }
+
+        });
+
+
+        
     });
 
 
-
-
-
-
-    res.send('POST request to homepage');
-});
-
-
-app.get('/test', function(req, res) {
-         res.render('test', {
+    app.get('/test', function(req, res) {
+        res.render('test', {
             title: 'Atlassian Connect'
                 //issueId: req.query['issueId']
         });
