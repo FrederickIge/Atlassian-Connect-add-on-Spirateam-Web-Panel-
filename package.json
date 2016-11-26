@@ -8,6 +8,7 @@
   "dependencies": {
     "atlassian-connect-express": "2.0.0",
     "body-parser": "^1.14.2",
+    "chart.js": "^2.4.0",
     "compression": "^1.6.0",
     "cookie-parser": "^1.4.0",
     "errorhandler": "^1.4.2",

@@ -1,11 +1,41 @@
 // Define the `phonecatApp` module
-var phonecatApp = angular.module('phonecatApp', []).config(function($interpolateProvider){
-    $interpolateProvider.startSymbol('{[{').endSymbol('}]}');
-});
+var phonecatApp = angular.module('phonecatApp', ["chart.js"])
+
+.config(function(ChartJsProvider) {
+        // Configure all charts
+        ChartJsProvider.setOptions({
+ 
+            responsive: false
+        });
+
+    })
+    .config(function($interpolateProvider) {
+        $interpolateProvider.startSymbol('{[{').endSymbol('}]}');
+    });
+
 
 // Define the `PhoneListController` controller on the `phonecatApp` module
-phonecatApp.controller('PhoneListController', function PhoneListController($scope, $window, $http) {
+phonecatApp.controller('PhoneListController', function PhoneListController($scope, $window, $http, $timeout) {
     var baseUrl = $window.base;
+
+   $scope.labels = ["Failed", "Passed", "Not Run","Blocked","Caution"];
+  $scope.data = [1, 3, 5,2,2];
+$scope.colors = ['#f47457','#7eff7a','#e0e0e0','#f4f356','#f29e56'];
+     
+
+$scope.CoverageCountTotal;
+    $scope.CoverageCountPassed;
+    $scope.CoverageCountFailed;
+    $scope.CoverageCountCaution;
+    $scope.CoverageCountBlocked;
+
+
+
+
+
+
+
+
 
     $scope.issueKey; //JIRA issue id
     $scope.projectKey //JIRA project id
@@ -14,14 +44,11 @@ phonecatApp.controller('PhoneListController', function PhoneListController($scop
     $scope.apiKey; //SpiralTeam API key 
     $scope.username; //SpiralTeam username
     $scope.projectID; //SpiralTeam Project ID  
+    $scope.dataMappingID;
 
     $scope.apiKey; //SpiralTeam API key response.data.CoverageCountTotal
 
-    $scope.CoverageCountTotal;
-    $scope.CoverageCountPassed;
-    $scope.CoverageCountFailed;
-    $scope.CoverageCountCaution;
-    $scope.CoverageCountBlocked;
+    
 
     AP.resize(); //resized iframe to proper width
 
@@ -42,16 +69,18 @@ phonecatApp.controller('PhoneListController', function PhoneListController($scop
 
                     // Convert the string response to JSON
                     response = JSON.parse(response);
+                    console.log(response)
                     $scope.spiraURL = response.value.spiraURL
                     $scope.apiKey = response.value.apiKey
                     $scope.username = response.value.username
+                    $scope.dataMappingID = response.value.dataMappingID
                     $scope.projectID = response.value.projectID
                         //update scope values within the callback
                     $scope.$apply();
 
 
                     //The SpiraTeam Instance URL
-                    var url = $scope.spiraURL + '/Services/v5_0/RestService.svc/data-mappings/6/artifacts/1/search' //NOTE: NEED TO INCLUDE DATA MAPPING VARIABLE
+                    var url = $scope.spiraURL + '/Services/v5_0/RestService.svc/data-mappings/' + $scope.dataMappingID + '/artifacts/1/search' //NOTE: NEED TO INCLUDE DATA MAPPING VARIABLE
 
                     var reqUrl = $scope.spiraURL + '/Services/v5_0/RestService.svc/projects/' + $scope.projectID + '/requirements/'
                         //user + apikey to get into SpiraTeam
