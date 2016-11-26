@@ -19,11 +19,13 @@ phonecatApp.controller('PhoneListController', function PhoneListController($scop
     var baseUrl = $window.base;
 
    $scope.labels = ["Failed", "Passed", "Not Run","Blocked","Caution"];
-  $scope.data = [1, 3, 5,2,2];
-$scope.colors = ['#f47457','#7eff7a','#e0e0e0','#f4f356','#f29e56'];
+ // $scope.data = [1, 3, 5,2,2];
+  
+ 
+  $scope.colors = ['#f47457','#7eff7a','#e0e0e0','#f4f356','#f29e56'];
      
 
-$scope.CoverageCountTotal;
+    $scope.CoverageCountTotal;
     $scope.CoverageCountPassed;
     $scope.CoverageCountFailed;
     $scope.CoverageCountCaution;
@@ -110,7 +112,9 @@ $scope.CoverageCountTotal;
                         $scope.CoverageCountFailed = response.data.CoverageCountFailed
                         $scope.CoverageCountCaution = response.data.CoverageCountCaution
                         $scope.CoverageCountBlocked = response.data.CoverageCountBlocked
-
+                        //Not run = total - (blocked + Caution + Failed+ Passed)
+                var notRun = $scope.CoverageCountTotal - ($scope.CoverageCountPassed + $scope.CoverageCountFailed + $scope.CoverageCountCaution + $scope.CoverageCountBlocked )
+ $scope.data = [$scope.CoverageCountFailed, $scope.CoverageCountPassed, notRun,$scope.CoverageCountBlocked,$scope.CoverageCountCaution];
                     }, function errorCallback(response) {
 
                     });
