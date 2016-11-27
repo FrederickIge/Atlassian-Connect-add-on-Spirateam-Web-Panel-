@@ -44,11 +44,12 @@ phonecatApp.controller('ConfigController', function ConfigController($scope, $wi
 
 
     AP.resize();
+    
     AP.require("_util", function(util) {
         var hostString = util.decodeQueryComponent(window.location.href);
         var qs = URI(hostString).query(true);
         $scope.projectKey = qs['projectKey'];
-        $scope.$apply();
+        
 
 
         AP.require(['request'], function(request) {
@@ -56,6 +57,7 @@ phonecatApp.controller('ConfigController', function ConfigController($scope, $wi
                 url: baseUrl + '/rest/api/latest/project/' + $scope.projectKey + '/properties/spira',
                 success: function(response) {
                     response = JSON.parse(response);
+                    console.log(response)
                     $scope.spiraURL = response.value.spiraURL
                     $scope.apiKey = response.value.apiKey
                     $scope.username = response.value.username
