@@ -1,14 +1,12 @@
-console.log('TEST')
-
 // Define the `phonecatApp` module
 var phonecatApp = angular.module('phonecatApp', ['ngRoute']);
 
 // Define the `PhoneListController` controller on the `phonecatApp` module
 phonecatApp.controller('ConfigController', function ConfigController($scope, $window, $http, $route, $location) {
 
+
     var baseUrl = $window.base; //base URL: https://femidev.atlassian.net
     $scope.projectKey; //JIRA current project - FEM
-
 
 
     $scope.submit = function() {
@@ -42,7 +40,6 @@ phonecatApp.controller('ConfigController', function ConfigController($scope, $wi
         });
     }
 
-
     AP.resize();
     
     AP.require("_util", function(util) {
@@ -50,8 +47,7 @@ phonecatApp.controller('ConfigController', function ConfigController($scope, $wi
         var qs = URI(hostString).query(true);
         $scope.projectKey = qs['projectKey'];
         
-
-
+        
         AP.require(['request'], function(request) {
             request({
                 url: baseUrl + '/rest/api/latest/project/' + $scope.projectKey + '/properties/spira',
