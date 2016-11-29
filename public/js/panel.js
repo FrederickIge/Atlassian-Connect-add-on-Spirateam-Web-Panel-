@@ -14,7 +14,7 @@ var phonecatApp = angular.module('phonecatApp', ["chart.js"])
 
 
 // Define the `PhoneListController` controller on the `phonecatApp` module
-phonecatApp.controller('PhoneListController', function PhoneListController($scope, $window, $http, $timeout) {
+phonecatApp.controller('PhoneListController', function PhoneListController($scope, $window, $http, $timeout, People) {
     
     var baseUrl = $window.base;
 
@@ -46,8 +46,14 @@ phonecatApp.controller('PhoneListController', function PhoneListController($scop
 
     //Getting JIRA issue and project keys 
     AP.require("_util", function(util) {
+        
+        // full URL of host app
         var hostString = util.decodeQueryComponent(window.location.href);
+        
+        //query strings are parsed with URI.js
         var qs = URI(hostString).query(true);
+        
+        
         $scope.issueKey = qs['issueKey'];
 
         $scope.projectKey = qs['projectKey'];
@@ -60,6 +66,8 @@ phonecatApp.controller('PhoneListController', function PhoneListController($scop
 
                     // Convert the string response to JSON
                     response = JSON.parse(response);
+                    
+                    
                     console.log(response)
                     $scope.spiraURL = response.value.spiraURL
                     $scope.apiKey = response.value.apiKey
@@ -69,7 +77,7 @@ phonecatApp.controller('PhoneListController', function PhoneListController($scop
                     //update scope values within the callback
                     $scope.$apply();
 
-
+// LETS TURN THIS INTO A FACTORY 
                     //The SpiraTeam Instance URL
                     var url = $scope.spiraURL + '/Services/v5_0/RestService.svc/data-mappings/' + $scope.dataMappingID + '/artifacts/1/search' 
                     
@@ -81,13 +89,15 @@ phonecatApp.controller('PhoneListController', function PhoneListController($scop
                     //The Issue Key
                     var data = $scope.issueKey;
 
-
+console.log(People.objectmaker($scope.spiraURL,$scope.dataMappingID,$scope.projectID,$scope.username,$scope.apiKey,$scope.issueKey))
                     var requestdata = {
                         url: url,
                         encoded: encoded,
                         data: data,
                         reqUrl: reqUrl
                     }
+                    
+// LETS TURN THIS INTO A FACTORY                    
                     console.log(requestdata)
 
                     $http({
@@ -105,7 +115,7 @@ phonecatApp.controller('PhoneListController', function PhoneListController($scop
                 var notRun = $scope.CoverageCountTotal - ($scope.CoverageCountPassed + $scope.CoverageCountFailed + $scope.CoverageCountCaution + $scope.CoverageCountBlocked )
  $scope.data = [$scope.CoverageCountFailed, $scope.CoverageCountPassed, notRun,$scope.CoverageCountBlocked,$scope.CoverageCountCaution];
                     }, function errorCallback(response) {
-console.log(response);
+                        console.log(response);
                     });
 
                 }
@@ -116,4 +126,29 @@ console.log(response);
 
     });
 
+});
+
+phonecatApp.factory("People",function(){
+ 
+ return {
+
+    objectmaker : function(spiraURL,dataMappingID,projectID,username,apiKey,issueKey) {
+        var url = spiraURL + '/Services/v5_0/RestService.svc/data-mappings/' + dataMappingID + '/artifacts/1/search';
+        var reqUrl = spiraURL + '/Services/v5_0/RestService.svc/projects/' + projectID + '/requirements/'
+        var preauth = username + ":" + apiKey
+        var encoded = btoa(preauth);
+        var data = issueKey;
+          var requestdata = {
+                        url: url,
+                        encoded: encoded,
+                        data: data,
+                        reqUrl: reqUrl
+                    }
+                    console.log(requestdata)
+                    return requestdata
+    }
+
+    }
+ 
+  
 });

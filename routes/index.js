@@ -19,19 +19,13 @@ module.exports = function(app, addon) {
     // This is an example route that's used by the default "generalPage" module.
     // Verify that the incoming request is authenticated with Atlassian Connect
     app.get('/hello-world', addon.authenticate(), function(req, res) {
-
-
-
         res.render('hello-world', {
             title: 'Atlassian Connect'
-
         });
     });
 
     app.post('/spirateam', function(req, res) {
-
-
-
+        // setting up a post request containing the name of the JIRA issue in the body 
         var options1 = {
             method: 'POST',
             url: req.body.url,
@@ -42,20 +36,18 @@ module.exports = function(app, addon) {
             body: req.body.data,
             json: true
         };
-
-
-
-
+        
+        //request is sent 
         request(options1, function(error, response, body) {
             if (error) throw new Error(error);
 
             console.log(typeof response.body)
-
+        //if response body is empty, we end the response here 
             if (response.body == '[]' || JSON.stringify(response.body) == '[]') {
                 console.log('inside')
                res.end()
             }
-
+        //if its not empty, we prepare a GET request that uses the artifact id of the last response 
             else {
                 var requirement = response.body[0].ArtifactIds[0];
 
@@ -69,18 +61,14 @@ module.exports = function(app, addon) {
                     json: true
                 };
                 console.log(req.body.reqUrl + requirement)
+                
+        //SpiraTeam requirement details are sent back to the browser in JSON
                 request(options2, function(error, response, body) {
                     if (error) throw new Error(error);
-
-                    
                     res.json(response.body);
                 });
             }
-
         });
-
-
-        
     });
 
 
