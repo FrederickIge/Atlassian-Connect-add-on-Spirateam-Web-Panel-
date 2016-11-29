@@ -14,7 +14,7 @@ var phonecatApp = angular.module('phonecatApp', ["chart.js"])
 
 
 // Define the `PhoneListController` controller on the `phonecatApp` module
-phonecatApp.controller('PhoneListController', function PhoneListController($scope, $window, $http, $timeout, People) {
+phonecatApp.controller('PhoneListController', function PhoneListController($scope, $window, $http, $timeout, objectmaker) {
     
     var baseUrl = $window.base;
 
@@ -77,27 +77,11 @@ phonecatApp.controller('PhoneListController', function PhoneListController($scop
                     //update scope values within the callback
                     $scope.$apply();
 
-// LETS TURN THIS INTO A FACTORY 
-                    //The SpiraTeam Instance URL
-                    var url = $scope.spiraURL + '/Services/v5_0/RestService.svc/data-mappings/' + $scope.dataMappingID + '/artifacts/1/search' 
-                    
-                    var reqUrl = $scope.spiraURL + '/Services/v5_0/RestService.svc/projects/' + $scope.projectID + '/requirements/'
-                    //user + apikey to get into SpiraTeam
-                    var preauth = $scope.username + ":" + $scope.apiKey
-                    //Base64 encoded header 
-                    var encoded = btoa(preauth);
-                    //The Issue Key
-                    var data = $scope.issueKey;
 
-console.log(People.objectmaker($scope.spiraURL,$scope.dataMappingID,$scope.projectID,$scope.username,$scope.apiKey,$scope.issueKey))
-                    var requestdata = {
-                        url: url,
-                        encoded: encoded,
-                        data: data,
-                        reqUrl: reqUrl
-                    }
+var requestdata = objectmaker.objectmaker($scope.spiraURL,$scope.dataMappingID,$scope.projectID,$scope.username,$scope.apiKey,$scope.issueKey)
+                 
                     
-// LETS TURN THIS INTO A FACTORY                    
+                  
                     console.log(requestdata)
 
                     $http({
@@ -128,7 +112,7 @@ console.log(People.objectmaker($scope.spiraURL,$scope.dataMappingID,$scope.proje
 
 });
 
-phonecatApp.factory("People",function(){
+phonecatApp.factory("objectmaker",function(){
  
  return {
 
@@ -151,4 +135,28 @@ phonecatApp.factory("People",function(){
     }
  
   
+});
+
+phonecatApp.factory("request", function($http, requestdata, CoverageCountTotal, CoverageCountPassed, CoverageCountFailed, CoverageCountCaution, CoverageCountBlocked, data) {
+
+    $http({
+        method: 'POST',
+        url: '/spirateam',
+        data: requestdata
+    }).then(function successCallback(response) {
+        console.log(response)
+        CoverageCountTotal = response.data.CoverageCountTotal
+        CoverageCountPassed = response.data.CoverageCountPassed
+        CoverageCountFailed = response.data.CoverageCountFailed
+        CoverageCountCaution = response.data.CoverageCountCaution
+        CoverageCountBlocked = response.data.CoverageCountBlocked
+            //Not run = total - (blocked + Caution + Failed+ Passed)
+        var notRun = CoverageCountTotal - (CoverageCountPassed + CoverageCountFailed + CoverageCountCaution + CoverageCountBlocked)
+        
+        return [CoverageCountFailed, CoverageCountPassed, notRun, CoverageCountBlocked, CoverageCountCaution];
+    }, function errorCallback(response) {
+        console.log(response);
+    });
+
+
 });
