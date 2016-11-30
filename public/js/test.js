@@ -1,8 +1,8 @@
-// Define the `phonecatApp` module
-var phonecatApp = angular.module('phonecatApp', ['ngRoute']);
+// Define the `spiraDisplayApp` module
+var spiraDisplayApp = angular.module('spiraDisplayApp', ['ngRoute']);
 
-// Define the `PhoneListController` controller on the `phonecatApp` module
-phonecatApp.controller('ConfigController', function ConfigController($scope, $window, $http, $route, $location) {
+// Define the `PhoneListController` controller on the `spiraDisplayApp` module
+spiraDisplayApp.controller('ConfigController', function ConfigController($scope, $window, $http, $route, $location) {
 
 
     var baseUrl = $window.base; //base URL: https://femidev.atlassian.net

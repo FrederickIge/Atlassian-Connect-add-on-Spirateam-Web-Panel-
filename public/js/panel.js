@@ -1,9 +1,9 @@
-var phonecatApp = angular.module('phonecatApp', ["chart.js"])
+var spiraDisplayApp = angular.module('spiraDisplayApp', ["chart.js"])
 
     .config(function(ChartJsProvider) {ChartJsProvider.setOptions({responsive: false});})
     .config(function($interpolateProvider) {$interpolateProvider.startSymbol('{[{').endSymbol('}]}');});
 
-phonecatApp.controller('PhoneListController', function PhoneListController($scope, $window, $http, object, poster,datasetter) {
+spiraDisplayApp.controller('PhoneListController', function PhoneListController($scope, $window, $http, object, poster,datasetter) {
 
     var baseUrl = $window.base;
     $scope.labels = ["Failed", "Passed", "Not Run", "Blocked", "Caution"];
@@ -24,7 +24,7 @@ phonecatApp.controller('PhoneListController', function PhoneListController($scop
                 success: function(response) {
                     response = JSON.parse(response);
                     
-                    //factory driven AJAX calls to get Spriteam Requirement data (objectmaker,poster,datasetter)
+                    //factory driven AJAX calls to get Spriteam Requirement data (object,poster,datasetter)
                     var requestdata = object.objectmaker(response,$scope.issueKey)
                     poster.postmaker($http, requestdata).then(function successCallback(response) {
                     $scope.data = datasetter.set(response)
@@ -40,7 +40,7 @@ phonecatApp.controller('PhoneListController', function PhoneListController($scop
 
 });
 
-phonecatApp.factory("object", function() {
+spiraDisplayApp.factory("object", function() {
 
     return {
 
@@ -74,7 +74,7 @@ phonecatApp.factory("object", function() {
     }
 });
 
-phonecatApp.factory("poster", function() {
+spiraDisplayApp.factory("poster", function() {
     return {
         postmaker: function($http, requestdata, CoverageCountTotal, CoverageCountPassed, CoverageCountFailed, CoverageCountCaution, CoverageCountBlocked, callbackFn) {
             return $http({
@@ -87,7 +87,7 @@ phonecatApp.factory("poster", function() {
     }
 });
 
-phonecatApp.factory("datasetter", function() {
+spiraDisplayApp.factory("datasetter", function() {
     return {
         set: function(response){
             var notRun = response.data.CoverageCountTotal - (response.data.CoverageCountPassed + response.data.CoverageCountFailed + response.data.CoverageCountCaution + response.data.CoverageCountBlocked)
