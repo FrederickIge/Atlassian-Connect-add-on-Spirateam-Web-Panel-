@@ -18,8 +18,8 @@ module.exports = function(app, addon) {
 
     // This is an example route that's used by the default "generalPage" module.
     // Verify that the incoming request is authenticated with Atlassian Connect
-    app.get('/hello-world', addon.authenticate(), function(req, res) {
-        res.render('hello-world', {
+    app.get('/webPanel', addon.authenticate(), function(req, res) {
+        res.render('webPanel', {
             title: 'Atlassian Connect'
         });
     });
@@ -72,8 +72,8 @@ module.exports = function(app, addon) {
     });
 
 
-    app.get('/test', function(req, res) {
-        res.render('test', {
+    app.get('/config', function(req, res) {
+        res.render('config', {
             title: 'Atlassian Connect'
                 //issueId: req.query['issueId']
         });

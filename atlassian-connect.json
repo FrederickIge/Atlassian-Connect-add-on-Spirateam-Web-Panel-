@@ -46,7 +46,7 @@
         }],
         "webPanels": [
       {
-        "url": "/hello-world?issueKey={issue.key}&projectKey={project.key}",
+        "url": "/webPanel?issueKey={issue.key}&projectKey={project.key}",
         "location": "atl.jira.view.issue.right.context",
         "layout": {
           "width": "10px",
@@ -62,7 +62,7 @@
     "jiraProjectAdminTabPanels": [
             {
                 "location": "projectgroup2",
-                "url": "/test?projectKey={project.key}",
+                "url": "/config?projectKey={project.key}",
                 "weight": 100,
                 "name": {
                     "value": "SpiraTeam API Access"
