@@ -3,7 +3,7 @@ var spiraDisplayApp = angular.module('spiraDisplayApp', ["chart.js"])
     .config(function(ChartJsProvider) {ChartJsProvider.setOptions({responsive: false});})
     .config(function($interpolateProvider) {$interpolateProvider.startSymbol('{[{').endSymbol('}]}');});
 
-spiraDisplayApp.controller('PhoneListController', function PhoneListController($scope, $window, $http, object, poster,datasetter) {
+spiraDisplayApp.controller('WebPanelController', function WebPanelController($scope, $window, $http, object, poster,datasetter) {
 
     var baseUrl = $window.base;
     $scope.labels = ["Failed", "Passed", "Not Run", "Blocked", "Caution"];
