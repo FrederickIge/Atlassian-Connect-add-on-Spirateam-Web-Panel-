@@ -44,7 +44,7 @@ module.exports = function(app, addon) {
             console.log(typeof response.body)
         //if response body is empty, we end the response here 
             if (response.body == '[]' || JSON.stringify(response.body) == '[]') {
-                console.log('inside')
+                
                res.end()
             }
         //if its not empty, we prepare a GET request that uses the artifact id of the last response 
@@ -60,7 +60,7 @@ module.exports = function(app, addon) {
                     },
                     json: true
                 };
-                console.log(req.body.reqUrl + requirement)
+                
                 
         //SpiraTeam requirement details are sent back to the browser in JSON
                 request(options2, function(error, response, body) {

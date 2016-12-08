@@ -4,12 +4,15 @@ var spiraDisplayApp = angular.module('spiraDisplayApp', ['ngRoute']);
 // Define the `PhoneListController` controller on the `spiraDisplayApp` module
 spiraDisplayApp.controller('ConfigController', function ConfigController($scope, $window, $http, $route, $location) {
 
+    //base URL: https://femidev.atlassian.net
+    var baseUrl = $window.base; 
+    
+    //JIRA current project - FEM
+    $scope.projectKey; 
 
-    var baseUrl = $window.base; //base URL: https://femidev.atlassian.net
-    $scope.projectKey; //JIRA current project - FEM
-
-
+    //form submission function
     $scope.submit = function() {
+        
         //prepare object for form submission
         var submission = {
             spiraURL: $scope.spiraURL,
@@ -19,10 +22,10 @@ spiraDisplayApp.controller('ConfigController', function ConfigController($scope,
             dataMappingID: $scope.dataMappingID
         }
 
-        //turn data into json format
+        //turn submission data into json format
         submission = angular.toJson(submission, true);
 
-        //submits and updates configuration. Refreshes on update sucsess 
+        //submits and updates configuration data. Page refreshes on update sucsess 
         AP.require('request', function(request) {
             request({
                 url: baseUrl + '/rest/api/latest/project/' + $scope.projectKey + '/properties/spira',
@@ -39,21 +42,22 @@ spiraDisplayApp.controller('ConfigController', function ConfigController($scope,
             });
         });
     }
-
+    
+    //Atlassian object: Makes iframe responsive
     AP.resize();
     
+    //Atlassian object: decode query string to get JIRA project key
     AP.require("_util", function(util) {
         var hostString = util.decodeQueryComponent(window.location.href);
         var qs = URI(hostString).query(true);
         $scope.projectKey = qs['projectKey'];
         
-        
+        //Atlassian object: Request Spirateam data stored in JIRA
         AP.require(['request'], function(request) {
             request({
                 url: baseUrl + '/rest/api/latest/project/' + $scope.projectKey + '/properties/spira',
                 success: function(response) {
                     response = JSON.parse(response);
-                    console.log(response)
                     $scope.spiraURL = response.value.spiraURL
                     $scope.apiKey = response.value.apiKey
                     $scope.username = response.value.username

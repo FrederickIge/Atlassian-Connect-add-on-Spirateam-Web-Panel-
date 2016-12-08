@@ -1,4 +1,4 @@
-spiraDisplayApp.factory("poster", function() {
+angular.module("poster", []).factory("poster", function() {
     return {
         postmaker: function($http, requestdata, CoverageCountTotal, CoverageCountPassed, CoverageCountFailed, CoverageCountCaution, CoverageCountBlocked, callbackFn) {
             return $http({
